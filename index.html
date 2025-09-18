@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyApp - Android App Landing Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #e0e7ff, #f3e8ff); /* Premium gradient background */
+            color: #202124;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #4285f4, #34c759); /* Play Store inspired gradient */
+            padding: 15px 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo img {
+            height: 40px;
+            filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.3));
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 15px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: opacity 0.3s;
+        }
+
+        nav ul li a:hover {
+            opacity: 0.7;
+        }
+
+        /* Main App Card */
+        .app-card {
+            max-width: 600px; /* Mobile-first for Android */
+            margin: 100px auto 50px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+        }
+
+        .app-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .app-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .app-icon img {
+            width: 80px;
+            height: 80px;
+            border-radius: 16px;
+            transition: transform 0.3s;
+        }
+
+        .app-icon img:hover {
+            transform: scale(1.1);
+        }
+
+        .app-info h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .app-info p {
+            color: #5f6368;
+            font-size: 0.9rem;
+            margin: 5px 0;
+        }
+
+        .download-button {
+            background: linear-gradient(135deg, #34c759, #4285f4);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-top: 10px;
+        }
+
+        .download-button img {
+            height: 18px;
+        }
+
+        .download-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .install-button {
+            background: #4285f4;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 100%;
+            transition: background 0.3s, transform 0.3s;
+            position: relative;
+        }
+
+        .install-button:hover {
+            background: #3267d6;
+            transform: translateY(-2px);
+        }
+
+        .install-button.loading::after {
+            content: '';
+            border: 2px solid #fff;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            animation: spin 1s linear infinite;
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        @keyframes spin {
+            0% { transform: translateY(-50%) rotate(0deg); }
+            100% { transform: translateY(-50%) rotate(360deg); }
+        }
+
+        .install-button:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        #install-status {
+            color: #34c759;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            text-align: center;
+            display: none;
+        }
+
+        /* Description */
+        .description {
+            margin: 20px 0;
+        }
+
+        .description h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .description p {
+            color: #5f6368;
+            line-height: 1.5;
+            font-size: 0.9rem;
+        }
+
+        /* Comments Section */
+        .comments {
+            margin: 20px 0;
+        }
+
+        .comments h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .comment-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .comment-form input,
+        .comment-form textarea {
+            padding: 10px;
+            border: 1px solid #dadce0;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .comment-form input:focus,
+        .comment-form textarea:focus {
+            border-color: #4285f4;
+        }
+
+        .comment-form button {
+            background: #4285f4;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        .comment-form button:hover {
+            background: #3267d6;
+            transform: translateY(-2px);
+        }
+
+        .comment-list .comment {
+            padding: 10px;
+            border-bottom: 1px solid #e5e7eb;
+            transition: background 0.3s;
+        }
+
+        .comment-list .comment:hover {
+            background: #f9fafb;
+        }
+
+        .comment p {
+            color: #5f6368;
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, #4285f4, #34c759);
+            color: #fff;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        footer a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+            opacity: 0.8;
+        }
+
+        footer a:hover {
+            opacity: 1;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .app-card {
+                margin: 80px 10px 30px;
+                padding: 15px;
+            }
+
+            .app-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .app-icon img {
+                width: 60px;
+                height: 60px;
+            }
+
+            .app-info h1 {
+                font-size: 1.5rem;
+            }
+
+            header {
+                padding: 10px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Main App Card -->
+    <section class="app-card" id="app">
+        <!-- App Header -->
+        <div class="app-header">
+            <div class="app-icon">
+                <img src="https://i.ibb.co/N6XPgjf3/Picsart-23-06-13-14-07-36-152.png" alt="App Icon">
+            </div>
+            <div class="app-info">
+                <h1>Pikashow OTT Watch Movies,Series</h1>
+                <p>Parth Studio</p>
+                <p>4.7 ★★★★★ (15K reviews)</p>
+                <a href="https://github.com/pikaflixapp/Pikashow-OTT-Watch.Apk/releases/download/v2.3/Pikashow.OTT.Watch.Movies.apk" class="download-button" download>
+                    <img src="https://i.ibb.co/N6XPgjf3/Picsart-23-06-13-14-07-36-152.png" alt="Play Store">
+                    Download for Android
+                </a>
+                <button class="install-button" onclick="simulateInstall(this)">Install</button>
+                <p id="install-status"></p>
+            </div>
+        </div>
+
+        <!-- Description -->
+        <div class="description" id="about">
+            <h2>About MyApp</h2>
+            <p>MyApp is your ultimate companion for productivity and entertainment. With a sleek, user-friendly interface, powerful features, and top-notch security, it’s designed to elevate your experience on Android. Regular updates ensure you stay ahead of the curve.</p>
+        </div>
+
+        <!-- Comments Section -->
+        <div class="comments" id="comments">
+            <h2>User Comments</h2>
+            <div class="comment-form">
+                <input type="text" id="comment-name" placeholder="Your Name" required>
+                <textarea id="comment-text" placeholder="Write your comment..." rows="4" required></textarea>
+                <button onclick="addComment()">Submit Comment</button>
+            </div>
+            <div class="comment-list" id="comment-list">
+                <!-- Comments will be dynamically added here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>Contact: https://telegram.me/+10G5VTVZJNo1MGVl</p>
+        <p>
+            <a href="#">Privacy Policy</a> |
+            <a href="#">Terms of Service</a> |
+            <a href="#">Contact Us</a>
+        </p>
+    </footer>
+
+    <script>
+        // Load comments from localStorage on page load
+        function loadComments() {
+            const commentList = document.getElementById('comment-list');
+            const comments = JSON.parse(localStorage.getItem('myapp-comments')) || [];
+            commentList.innerHTML = ''; // Clear existing comments
+            comments.forEach(comment => {
+                const newComment = document.createElement('div');
+                newComment.className = 'comment';
+                newComment.innerHTML = `<p><strong>${comment.name}:</strong> ${comment.text}</p>`;
+                commentList.appendChild(newComment);
+            });
+        }
+
+        // Add comment and save to localStorage
+        function addComment() {
+            const nameInput = document.getElementById('comment-name');
+            const textInput = document.getElementById('comment-text');
+            const commentList = document.getElementById('comment-list');
+
+            if (nameInput.value.trim() && textInput.value.trim()) {
+                const comment = {
+                    name: nameInput.value.trim(),
+                    text: textInput.value.trim()
+                };
+
+                // Save to localStorage
+                const comments = JSON.parse(localStorage.getItem('myapp-comments')) || [];
+                comments.push(comment);
+                localStorage.setItem('myapp-comments', JSON.stringify(comments));
+
+                // Add to DOM
+                const newComment = document.createElement('div');
+                newComment.className = 'comment';
+                newComment.innerHTML = `<p><strong>${comment.name}:</strong> ${comment.text}</p>`;
+                commentList.appendChild(newComment);
+
+                // Clear inputs
+                nameInput.value = '';
+                textInput.value = '';
+            } else {
+                alert('Please fill in both name and comment.');
+            }
+        }
+
+        // Simulate Install Process
+        function simulateInstall(button) {
+            const status = document.getElementById('install-status');
+            const downloadButton = document.querySelector('.download-button');
+
+            // Trigger download
+            downloadButton.click(); // Programmatically trigger APK download
+
+            // Show loading state
+            button.classList.add('loading');
+            button.disabled = true;
+            button.textContent = 'Downloading...';
+            status.style.display = 'none';
+
+            setTimeout(() => {
+                button.textContent = 'Installing...';
+                setTimeout(() => {
+                    button.classList.remove('loading');
+                    button.textContent = 'Installed';
+                    status.textContent = 'App installed successfully! Open from your device’s file manager.';
+                    status.style.display = 'block';
+                    setTimeout(() => {
+                        status.style.display = 'none';
+                    }, 5000);
+                }, 2000); // Simulate install after download
+            }, 3000); // Simulate 3-second download
+        }
+
+        // Load comments when page loads
+        window.onload = loadComments;
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
